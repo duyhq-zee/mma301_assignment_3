@@ -1,10 +1,17 @@
 import React from 'react';
 import { Text, View } from 'react-native';
 
-export default function AnimeDetaiPage() {
+interface AnimeDetaiPageProps {
+	route: any;
+}
+
+export default function AnimeDetaiPage({ route }: AnimeDetaiPageProps) {
+	const { anime } = route.params;
 	return (
 		<View>
-			<Text>AnimeDetaiPage</Text>
+			<Text>
+				{anime.id} - {anime.name}
+			</Text>
 		</View>
 	);
 }
