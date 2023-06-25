@@ -4,10 +4,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
+import { Provider } from 'react-redux';
 
 import HomePage from './pages/home/HomePage';
 import FavoriteAnimeListPage from './pages/favoriteAnimeListPage/FavoriteAnimeListPage';
 import AnimeDetaiPage from './pages/animeDetail/AnimeDetaiPage';
+
+import { store } from './store/store';
 
 const Stack = createNativeStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -42,18 +45,20 @@ const HomeNavigator = () => {
 export default function App() {
 	return (
 		<>
-			<NavigationContainer>
-				<Stack.Navigator>
-					<Stack.Screen
-						name="HomeNavigator"
-						component={HomeNavigator}
-						options={{
-							headerShown: false,
-						}}
-					/>
-					<Stack.Screen name="AnimeDetail" component={AnimeDetaiPage} />
-				</Stack.Navigator>
-			</NavigationContainer>
+			<Provider store={store}>
+				<NavigationContainer>
+					<Stack.Navigator>
+						<Stack.Screen
+							name="HomeNavigator"
+							component={HomeNavigator}
+							options={{
+								headerShown: false,
+							}}
+						/>
+						<Stack.Screen name="AnimeDetail" component={AnimeDetaiPage} />
+					</Stack.Navigator>
+				</NavigationContainer>
+			</Provider>
 		</>
 	);
 }
