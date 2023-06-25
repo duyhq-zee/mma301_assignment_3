@@ -3,9 +3,13 @@ import { Pressable, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 import {
-	addFavoriteAnime,
-	removeFavoriteAnime,
-} from '../../store/reducers/favoriteAnimesReducer';
+	addFavoriteAnimeId,
+	removeFavoriteAnimeId,
+} from '../../store/reducers/favoriteAnimeIdsReducer';
+import {
+	addFavoriteAnimeIdToAsyncStorage,
+	removeFavoriteAnimeIdToAsyncStorage,
+} from '../../utils/asyncStorage/favoriteAnimeIds';
 
 interface AnimeDetaiPageProps {
 	route: any;
@@ -19,18 +23,20 @@ export default function AnimeDetaiPage({
 	const { anime } = route.params;
 
 	const favoriteAnimeIds = useSelector(
-		(state: any) => state.favoriteAnimes.ids
+		(state: any) => state.favoriteAnimeIds.list
 	);
 
 	const isFavorite = favoriteAnimeIds.includes(anime.id);
 
 	const dispatch = useDispatch();
 
-	const switchFavoriteState = () => {
+	const switchFavoriteState = async () => {
 		if (isFavorite) {
-			dispatch(removeFavoriteAnime({ id: anime.id }));
+			dispatch(removeFavoriteAnimeId({ id: anime.id }));
+			await removeFavoriteAnimeIdToAsyncStorage(anime.id);
 		} else {
-			dispatch(addFavoriteAnime({ id: anime.id }));
+			dispatch(addFavoriteAnimeId({ id: anime.id }));
+			await addFavoriteAnimeIdToAsyncStorage(anime.id);
 		}
 	};
 

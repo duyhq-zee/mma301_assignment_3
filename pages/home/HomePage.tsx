@@ -1,41 +1,40 @@
-import React from 'react';
-import { FlatList, View, Text, StyleSheet } from 'react-native';
-import AnimeCardWidget from './components/AnimeCardWidget';
+import React, { useEffect } from 'react';
+import { View, StyleSheet } from 'react-native';
 import Anime from '../../models/Anime';
+import AnimeList from '../../components/feature/animeList/AnimeList';
+import { getAnimeListFromAsyncStorage } from '../../utils/asyncStorage/animes';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAnimeList } from '../../store/reducers/animesReducer';
+import { getFavoriteAnimeIdListFromAsyncStorage } from '../../utils/asyncStorage/favoriteAnimeIds';
+import { setFavoriteAnimeIdList } from '../../store/reducers/favoriteAnimeIdsReducer';
 
 interface HomePageProps {
 	navigation: any;
 }
 
 export default function HomePage({ navigation }: HomePageProps) {
-	const animeList: Anime[] = [
-		new Anime('1', 'Attack on Titan'),
-		new Anime('2', 'One Piece'),
-		new Anime('3', 'Naruto'),
-		new Anime('4', 'Death Note'),
-		new Anime('5', 'Dragon Ball Z'),
-		new Anime('6', 'Fullmetal Alchemist: Brotherhood'),
-		new Anime('7', 'My Hero Academia'),
-		new Anime('8', 'Sword Art Online'),
-		new Anime('9', 'Code Geass'),
-		new Anime('10', 'Hunter x Hunter'),
-	];
+	const animeList = useSelector((state: any) => state.animes.list);
+
+	const dispatch = useDispatch();
+
+	const fetchData = async () => {
+		const animeList: Anime[] = await getAnimeListFromAsyncStorage();
+		dispatch(setAnimeList({ list: animeList }));
+
+		const favoriteAnimeIdList: string[] =
+			await getFavoriteAnimeIdListFromAsyncStorage();
+
+		dispatch(setFavoriteAnimeIdList({ list: favoriteAnimeIdList }));
+	};
+
+	useEffect(() => {
+		fetchData();
+	}, []);
 
 	return (
 		<View style={styles.page}>
 			<View style={styles.animeListContainer}>
-				<FlatList
-					data={animeList}
-					keyExtractor={(item) => item.id.toString()}
-					renderItem={(item) => (
-						<AnimeCardWidget
-							anime={item.item}
-							onPress={() => {
-								navigation.navigate('AnimeDetail', { anime: item.item });
-							}}
-						/>
-					)}
-				></FlatList>
+				<AnimeList list={animeList} navigation={navigation} />
 			</View>
 		</View>
 	);
