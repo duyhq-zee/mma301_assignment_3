@@ -33,7 +33,7 @@ export default function HomePage({ navigation }: HomePageProps) {
 
 	return (
 		<View style={styles.page}>
-			<View style={styles.animeListContainer}>
+			<View>
 				<AnimeList list={animeList} navigation={navigation} />
 			</View>
 		</View>
@@ -44,8 +44,5 @@ const styles = StyleSheet.create({
 	page: {
 		flex: 1,
 		backgroundColor: '#e0e0e0',
-	},
-	animeListContainer: {
-		padding: 16,
 	},
 });

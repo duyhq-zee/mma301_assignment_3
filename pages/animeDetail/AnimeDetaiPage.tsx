@@ -1,5 +1,12 @@
 import React, { useLayoutEffect } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import {
+	Image,
+	Pressable,
+	ScrollView,
+	StyleSheet,
+	Text,
+	View,
+} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 import {
@@ -11,15 +18,15 @@ import {
 	removeFavoriteAnimeIdToAsyncStorage,
 } from '../../utils/asyncStorage/favoriteAnimeIds';
 
-interface AnimeDetaiPageProps {
+interface AnimeDetailPageProps {
 	route: any;
 	navigation: any;
 }
 
-export default function AnimeDetaiPage({
+export default function AnimeDetailPage({
 	route,
 	navigation,
-}: AnimeDetaiPageProps) {
+}: AnimeDetailPageProps) {
 	const { anime } = route.params;
 
 	const favoriteAnimeIds = useSelector(
@@ -59,9 +66,35 @@ export default function AnimeDetaiPage({
 
 	return (
 		<View>
-			<Text>
-				{anime.id} - {anime.name}
-			</Text>
+			<ScrollView>
+				<Image source={{ uri: anime.imageUrl }} style={style.image} />
+				<Text style={style.title}>{anime.name}</Text>
+				<Text style={style.description}>{anime.description}</Text>
+			</ScrollView>
 		</View>
 	);
 }
+
+const style = StyleSheet.create({
+	title: {
+		fontSize: 24,
+		fontWeight: 'bold',
+		marginTop: 16,
+		marginBottom: 16,
+		paddingLeft: 16,
+		paddingRight: 16,
+	},
+	description: {
+		fontSize: 14,
+		color: '#2A2A2B',
+		paddingLeft: 16,
+		paddingRight: 16,
+		marginBottom: 24,
+		lineHeight: 20,
+	},
+	image: {
+		alignSelf: 'stretch',
+		resizeMode: 'cover',
+		height: 400,
+	},
+});
