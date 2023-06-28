@@ -24,10 +24,10 @@ const addFavoriteAnimeIdToAsyncStorage = async (newId: string) => {
 	await AsyncStorage.setItem('favoriteAnimeIdList', newFavoriteString);
 };
 
-const removeFavoriteAnimeIdToAsyncStorage = async (newId: string) => {
+const removeFavoriteAnimeIdToAsyncStorage = async (removeId: string) => {
 	let favoriteIdList: string[] = await getFavoriteAnimeIdListFromAsyncStorage();
 
-	favoriteIdList.filter((id) => newId);
+	favoriteIdList = favoriteIdList.filter((id) => id != removeId);
 
 	let newFavoriteString: string = JSON.stringify(favoriteIdList);
 

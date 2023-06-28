@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useEffect, useLayoutEffect } from 'react';
+import { View, StyleSheet, Pressable } from 'react-native';
 import Anime from '../../models/Anime';
 import AnimeList from '../../components/feature/animeList/AnimeList';
 import { getAnimeListFromAsyncStorage } from '../../utils/asyncStorage/animes';
@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setAnimeList } from '../../store/reducers/animesReducer';
 import { getFavoriteAnimeIdListFromAsyncStorage } from '../../utils/asyncStorage/favoriteAnimeIds';
 import { setFavoriteAnimeIdList } from '../../store/reducers/favoriteAnimeIdsReducer';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 interface HomePageProps {
 	navigation: any;
@@ -26,6 +27,27 @@ export default function HomePage({ navigation }: HomePageProps) {
 
 		dispatch(setFavoriteAnimeIdList({ list: favoriteAnimeIdList }));
 	};
+
+	useLayoutEffect(() => {
+		navigation.setOptions({
+			headerRight: () => {
+				return (
+					<Pressable
+						onPress={() => {
+							navigation.navigate('FavoriteAnimeListPage');
+						}}
+					>
+						<MaterialCommunityIcons
+							name="cards-playing-heart-multiple-outline"
+							size={24}
+							style={{ marginRight: 16 }}
+							color="black"
+						/>
+					</Pressable>
+				);
+			},
+		});
+	}, [navigation]);
 
 	useEffect(() => {
 		fetchData();

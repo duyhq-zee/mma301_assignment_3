@@ -1,5 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet, Pressable, Image } from 'react-native';
+import {
+	View,
+	Text,
+	StyleSheet,
+	Pressable,
+	Image,
+	Platform,
+	ToastAndroid,
+	Alert,
+} from 'react-native';
 import Anime from '../../../models/Anime';
 import { Ionicons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,6 +20,7 @@ import {
 	addFavoriteAnimeIdToAsyncStorage,
 	removeFavoriteAnimeIdToAsyncStorage,
 } from '../../../utils/asyncStorage/favoriteAnimeIds';
+import Toast from 'react-native-simple-toast';
 
 interface AnimeCardWidgetProps {
 	anime: Anime;
@@ -31,11 +41,16 @@ export default function AnimeCardWidget({
 
 	const switchFavoriteState = async () => {
 		if (isFavorite) {
+			console.log('removeFavoriteAnimeId');
 			dispatch(removeFavoriteAnimeId({ id: anime.id }));
 			await removeFavoriteAnimeIdToAsyncStorage(anime.id);
+
+			Toast.show(`Oh no :< You unliked ${anime.name}`, Toast.SHORT);
 		} else {
 			dispatch(addFavoriteAnimeId({ id: anime.id }));
 			await addFavoriteAnimeIdToAsyncStorage(anime.id);
+
+			Toast.show(`Yay :> You liked ${anime.name}`, Toast.SHORT);
 		}
 	};
 

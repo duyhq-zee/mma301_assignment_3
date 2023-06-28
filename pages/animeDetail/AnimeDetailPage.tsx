@@ -17,6 +17,7 @@ import {
 	addFavoriteAnimeIdToAsyncStorage,
 	removeFavoriteAnimeIdToAsyncStorage,
 } from '../../utils/asyncStorage/favoriteAnimeIds';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 interface AnimeDetailPageProps {
 	route: any;
@@ -52,15 +53,17 @@ export default function AnimeDetailPage({
 			title: anime.name,
 			headerRight: () => {
 				return (
-					<View style={style.rightActions}>
-						<Pressable onPress={switchFavoriteState}>
-							<Ionicons
-								name={isFavorite ? 'heart' : 'heart-outline'}
-								color={isFavorite ? 'red' : 'black'}
-								size={24}
-							/>
-						</Pressable>
-					</View>
+					<Pressable
+						onPress={() => {
+							navigation.navigate('FavoriteAnimeListPage');
+						}}
+					>
+						<MaterialCommunityIcons
+							name="cards-playing-heart-multiple-outline"
+							size={24}
+							color="black"
+						/>
+					</Pressable>
 				);
 			},
 		});
@@ -70,7 +73,18 @@ export default function AnimeDetailPage({
 		<View>
 			<ScrollView>
 				<Image source={{ uri: anime.imageUrl }} style={style.image} />
-				<Text style={style.title}>{anime.name}</Text>
+				<View style={style.titleRow}>
+					<Text style={style.title}>{anime.name}</Text>
+
+					<Pressable onPress={switchFavoriteState}>
+						<Ionicons
+							name={isFavorite ? 'heart' : 'heart-outline'}
+							color={isFavorite ? 'red' : 'black'}
+							size={28}
+						/>
+					</Pressable>
+				</View>
+
 				<Text style={style.description}>{anime.description}</Text>
 			</ScrollView>
 		</View>
@@ -81,10 +95,6 @@ const style = StyleSheet.create({
 	title: {
 		fontSize: 24,
 		fontWeight: 'bold',
-		marginTop: 16,
-		marginBottom: 16,
-		paddingLeft: 16,
-		paddingRight: 16,
 	},
 	description: {
 		fontSize: 14,
@@ -99,8 +109,13 @@ const style = StyleSheet.create({
 		resizeMode: 'cover',
 		height: 400,
 	},
-	rightActions: {
+	titleRow: {
 		display: 'flex',
 		flexDirection: 'row',
+		justifyContent: 'space-between',
+		marginTop: 16,
+		marginBottom: 16,
+		paddingLeft: 16,
+		paddingRight: 16,
 	},
 });
