@@ -131,8 +131,13 @@ const mockData = async () => {
 	await AsyncStorage.setItem('animeList', JSON.stringify(animeList));
 };
 
+const clearFavoriteList = async () => {
+	await AsyncStorage.removeItem('favoriteAnimeIdList');
+};
+
 export default function App() {
 	useEffect(() => {
+		// clearFavoriteList();
 		mockData();
 	}, []);
 

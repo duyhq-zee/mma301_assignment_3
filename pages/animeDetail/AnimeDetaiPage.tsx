@@ -52,13 +52,15 @@ export default function AnimeDetailPage({
 			title: anime.name,
 			headerRight: () => {
 				return (
-					<Pressable onPress={switchFavoriteState}>
-						<Ionicons
-							name={isFavorite ? 'heart' : 'heart-outline'}
-							color={isFavorite ? 'red' : 'black'}
-							size={24}
-						/>
-					</Pressable>
+					<View style={style.rightActions}>
+						<Pressable onPress={switchFavoriteState}>
+							<Ionicons
+								name={isFavorite ? 'heart' : 'heart-outline'}
+								color={isFavorite ? 'red' : 'black'}
+								size={24}
+							/>
+						</Pressable>
+					</View>
 				);
 			},
 		});
@@ -96,5 +98,9 @@ const style = StyleSheet.create({
 		alignSelf: 'stretch',
 		resizeMode: 'cover',
 		height: 400,
+	},
+	rightActions: {
+		display: 'flex',
+		flexDirection: 'row',
 	},
 });
